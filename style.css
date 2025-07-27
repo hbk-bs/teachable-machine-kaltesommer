@@ -1,9 +1,14 @@
+@font-face {
+  font-family: "brillant";
+  src: url(brillant.otf);
+}
+
 body {
-  font-family: Courier, monospace;
   margin: 5px;
-  padding: 5px;
+  padding: 10%;
   text-align: center;
   line-height: 27px;
+  font-family: "brillant";
 }
 
 .textBox h1 {
@@ -16,8 +21,9 @@ body {
 #label-output {
   font-size: 1.1em;
   margin-top: 10px;
+  
 }
 
 pre {
-  font-family: Courier, monospace;
+  font-family: "brillant";
 }

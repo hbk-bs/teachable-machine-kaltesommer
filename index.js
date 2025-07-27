@@ -5,46 +5,12 @@ let model;
 
 const URL = "https://teachablemachine.withgoogle.com/models/VOQjAedL9/";
 
-const svgImg1 = document.getElementById("fishes");
-const svgImg2 = document.getElementById("fishes-1");
-const svgImg3 = document.getElementById("fishes-2");
-const svgImg4 = document.getElementById("bubble");
-
-const bildschirm = document.getElementById("bildschirm")
-
-svgImg1.style.backgroundColor = "white";
-svgImg2.style.backgroundColor = "white";
-svgImg3.style.backgroundColor = "white";
-svgImg4.style.backgroundColor = "white";
-
-svgImg1.addEventListener('click', () => {
-  console.log("Clicked svgImg1 with color:", currentColor);
-  svgImg1.style.backgroundColor = currentColor;
-});
-
-svgImg2.addEventListener('click', () => {
-  console.log("Clicked svgImg2 with color:", currentColor);
-  svgImg2.style.backgroundColor = currentColor;
-});
-
-svgImg3.addEventListener('click', () => {
-  console.log("Clicked svgImg3 with color:", currentColor);
-  svgImg3.style.backgroundColor = currentColor;
-});
-
-svgImg4.addEventListener('click', () => {
-  console.log("Clicked svgImg4 with color:", currentColor);
-  svgImg4.style.backgroundColor = currentColor;
-});
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-
+const objects = [
+  document.getElementById("fishes"),
+  document.getElementById("fishes-1"),
+  document.getElementById("fishes-2"),
+  document.getElementById("bubble")
+];
 
 const colorMap = {
   "red": { num: 1, col: "#ff4c4c" },
@@ -63,11 +29,10 @@ function setup() {
 
   video = createCapture(VIDEO);
   video.size(320, 240);
-  video.hide(); 
+  video.hide();
 
   loadModel2();
 }
-
 
 function draw() {
   background(255);
@@ -86,9 +51,27 @@ async function predictLoop() {
     const prediction = await model.predict(video.elt);
     prediction.sort((a, b) => b.probability - a.probability);
     label = prediction[0].className;
-    console.log(label)
-    currentColor = colorMap[label].col;
+    currentColor = colorMap[label]?.col || "white";
     document.getElementById("label-output").innerText = `Detected Color: ${label}`;
   }
   setTimeout(predictLoop, 200);
 }
+
+// Wait for each SVG object to load, then add click listeners
+objects.forEach(obj => {
+  obj.addEventListener("load", () => {
+    const svgDoc = obj.contentDocument;
+    if (!svgDoc) return;
+
+    const clickableElements = svgDoc.querySelectorAll("path, rect, circle, polygon");
+
+    clickableElements.forEach(el => {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", () => {
+        console.log("Clicked element in", obj.id, "with color:", currentColor);
+        el.setAttribute("fill", currentColor);
+        document.getElementById("correct-sound").play();
+      });
+    });
+  });
+});
