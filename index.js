@@ -57,7 +57,7 @@ async function predictLoop() {
   setTimeout(predictLoop, 200);
 }
 
-// Wait for each SVG object to load, then add click listeners
+
 objects.forEach(obj => {
   obj.addEventListener("load", () => {
     const svgDoc = obj.contentDocument;

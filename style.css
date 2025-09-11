@@ -2,10 +2,9 @@
   font-family: "brillant";
   src: url(brillant.otf);
 }
-
 body {
   margin: 5px;
-  padding: 10%;
+  padding: 5%;
   text-align: center;
   line-height: 27px;
   font-family: "brillant";
@@ -21,9 +20,13 @@ body {
 #label-output {
   font-size: 1.1em;
   margin-top: 10px;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1em;
 }
 
 pre {
   font-family: "brillant";
+ 
 }
